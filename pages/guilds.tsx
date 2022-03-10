@@ -58,7 +58,7 @@ const DashboardButton = () => {
 
 const Guild = ({ guild }: IGuildPropType) => {
     const iconURL = guild.icon
-    ? guild.icon
+    ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=2048`
     : "https://cdn.discordapp.com/embed/avatars/1.png";
     return (
         <div className="flex flex-col items-center w-max space-y-2 col-span-1">

@@ -4,6 +4,12 @@ import Header from "../components/index/Header";
 import Navbar from "../components/index/Navbar";
 import Sections from "../components/index/Sections";
 import Head from "next/head";
+import dynamic from "next/dynamic";
+
+const HeaderNoSSR = dynamic(
+  () => import('../components/index/Header'),
+  { ssr: false }
+)
 
 const Home = () => {
   return (
@@ -16,7 +22,7 @@ const Home = () => {
       </Head>
       <div className="flex flex-col">
         <Navbar />
-        <Header />
+        <HeaderNoSSR />
         <DiscordBar />
         <Sections />
         <Footer />
