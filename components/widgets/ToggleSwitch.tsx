@@ -36,14 +36,14 @@ const ToggleSwitch = ({onSwitchOff, onSwitchOn, checked=false}:IToggleSwitchProp
       setWidth(parseInt(window.getComputedStyle(toggle, ":after").height))
       setPad(parseInt(window.getComputedStyle(toggle).padding))
     }
-  })
+  }, []);
 
   const Checkbox = useCallback((checkbox) => {
     if(checkbox !== null){
 
       checkbox.checked = checked
       
-      checkbox.onclick = (event) => {
+      checkbox.onclick = (event: any) => {
         if(checkbox.checked){
           if(onSwitchOn){
             onSwitchOn()
@@ -56,7 +56,7 @@ const ToggleSwitch = ({onSwitchOff, onSwitchOn, checked=false}:IToggleSwitchProp
         }
       }
     }
-  })
+  }, [checked, onSwitchOff, onSwitchOn]);
   
   return(
     <div className="relative w-full h-full flex items-center">
