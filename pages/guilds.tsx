@@ -13,6 +13,7 @@ import Codeblock from "../components/widgets/Codeblock";
 import exchangeCode from "../utils/code";
 import getGuilds from "../utils/guilds";
 import getUser from "../utils/user";
+import Link from "next/link";
 
 interface GuildsPageProps {
     guilds?: RESTGetAPICurrentUserGuildsResult,
@@ -57,7 +58,7 @@ const Guild = ({ guild }: IGuildPropType) => {
     return (
         <div className="flex flex-col items-center w-max space-y-2 col-span-1">
             <div>
-                <Image className="rounded-3xl hover:rounded-md duration-200 cursor-pointer" src={iconURL} alt="Guild icon" width={200} height={200}/>
+                <Image className="rounded-3xl hover:rounded-md filter hover:brightness-150 duration-200 cursor-pointer" src={iconURL} alt="Guild icon" width={200} height={200}/>
             </div>
 
             <div className="text-gray-300 w-max text-center">
@@ -68,16 +69,31 @@ const Guild = ({ guild }: IGuildPropType) => {
     );
 }
 
+const LogoutButton = () => {
+    return (
+        <Link href='/' passHref>
+            <div className="p-3 bg-rose-600 hover:bg-rose-500 duration-200 rounded-md cursor-pointer text-gray-900">
+                <p>Logout</p>
+            </div>
+        </Link>
+    );
+}
+
 const Profile = ({ user }: IProfilePropType) => {
     const iconURL = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=1024`;
     return (
         <div className="flex bg-dark-850 rounded-lg p-8">
-            <div className="flex flex-row space-x-6">
-                <Image className="rounded-lg" src={iconURL} alt="Profile picture" width={108} height={108}/>
-                <div className="flex flex-col">
-                    <p className="text-gray-200 text-3xl">{user.username}</p>
-                    <p className="text-gray-400 text-2xl">{'#' + user.discriminator}</p>
-                    <p className="text-gray-400 text-2xl font-mono">{'ID: ' + user.id}</p>
+            <div className="flex flex-row justify-between w-full">
+                <div className="flex flex-row space-x-6">
+                    <Image className="rounded-lg" src={iconURL} alt="Profile picture" width={108} height={108}/>
+                    <div className="flex flex-col">
+                        <p className="text-gray-200 text-3xl">{user.username}</p>
+                        <p className="text-gray-400 text-2xl">{'#' + user.discriminator}</p>
+                        <p className="text-gray-400 text-2xl font-mono">{'ID: ' + user.id}</p>
+                    </div>
+                </div>
+                <div className="flex items-center">
+                    <LogoutButton/>
                 </div>
             </div>
         </div>
