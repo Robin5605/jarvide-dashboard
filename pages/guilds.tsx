@@ -34,7 +34,6 @@ interface IProfilePropType {
 export async function getServerSideProps(ctx: Context) {
 
     const { code } = ctx.query;
-    console.log("Code is: " + code)
     if(typeof code !== 'string') return { props: { } }; // Non string code in querystring
 
     const response = await exchangeCode(code);
