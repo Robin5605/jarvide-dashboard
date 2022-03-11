@@ -6,5 +6,8 @@ module.exports = {
       'cdn.discordapp.com',
       'discord.com',
     ]
+  },
+  experimental: {
+    outputStandalone: true,
   }
 }
