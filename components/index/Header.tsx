@@ -32,7 +32,7 @@ const ButtonSection = () => {
     return (
         <div className="flex flex-row justify-between">
             <div className="bg-lush-700 border-2 border-lush-700 hover:shadow-md text-white hover:bg-lush-600 p-3 rounded-sm duration-200 cursor-pointer">
-                <Link href={token ? "/guilds" : OAUTH_URL}>GET STARTED NOW</Link>
+                <Link href={OAUTH_URL}>GET STARTED NOW</Link>
             </div>
 
             <div className=" border-2 border-gray-300 text-gray-300 rounded-sm px-6 py-3 hover:shadow-md hover:border-white hover:text-white duration-200 cursor-pointer">

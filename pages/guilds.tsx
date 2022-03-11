@@ -1,19 +1,26 @@
 import axios from "axios";
 import { 
-    APIUser, 
-    RESTPostOAuth2AccessTokenResult,
-    RESTGetAPICurrentUserGuildsResult as CurrentUserGuilds, 
-    RESTAPIPartialCurrentUserGuild
+    RESTPostOAuth2AccessTokenResult, 
+    RESTGetAPICurrentUserGuildsResult, 
+    RESTAPIPartialCurrentUserGuild 
 } from "discord-api-types/v9";
+import { GetServerSidePropsContext as Context } from "next";
+import { APIUser } from "discord-api-types/v9";
+
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { OAUTH_URL } from "../config";
-import Codeblock from "../components/widgets/Codeblock"
-import { BOT_TOKEN } from "../config";
+import Codeblock from "../components/widgets/Codeblock";
+
+import exchangeCode from "../utils/code";
+import getGuilds from "../utils/guilds";
+import getUser from "../utils/user";
+
+interface GuildsPageProps {
+    guilds?: RESTGetAPICurrentUserGuildsResult,
+    user?: APIUser,
+}
 
 interface IGuildsPropType {
-    guilds: CurrentUserGuilds
+    guilds: RESTGetAPICurrentUserGuildsResult
 }
 
 interface IGuildPropType {
@@ -24,36 +31,24 @@ interface IProfilePropType {
     user: APIUser
 }
 
-function getAccessToken(): string | null {
-    const tokenData = localStorage.getItem("token_data")
-    if(!tokenData) return null;
-    const parsed = JSON.parse(tokenData) as RESTPostOAuth2AccessTokenResult;
+export async function getServerSideProps(ctx: Context) {
 
-    return parsed.access_token;
-}
+    const { code } = ctx.query;
+    console.log("Code is: " + code)
+    if(typeof code !== 'string') return { props: { } }; // Non string code in querystring
 
-async function getGuilds(token: string): Promise<CurrentUserGuilds> {
-    const res = await axios.get('/api/guilds', {
-        params: {token}
-    });
+    const response = await exchangeCode(code);
+    if(!response) return { props: { } }; // String code, but invalid code
 
-    return res.data;
-}
-
-async function getUser(token: string): Promise<APIUser> {
-    const res = await axios.get('/api/user', {
-        params: {token}
-    });
-
-    return res.data;
-}
-
-const DashboardButton = () => {
-    return (
-        <button className="w-32 h-8 bg-lush-700 rounded-md hover:bg-lush-800 text-gray-200 duration-200">
-            Dashboard
-        </button>
-    );
+    const guilds = await getGuilds(response.access_token);
+    const user = await getUser(response.access_token);
+    return {
+        props: {
+            guilds,
+            user,
+        }
+    }
+    
 }
 
 const Guild = ({ guild }: IGuildPropType) => {
@@ -105,48 +100,21 @@ const Guilds = ({ guilds }: IGuildsPropType) => {
     );
 }
 
-const GuildsPage = () => {
-    const [guildData, setGuildData] = useState<CurrentUserGuilds>();
-    const [userData, setUserData] = useState<APIUser>();
 
-    const router = useRouter();
-    useEffect(() => {
-        const token = getAccessToken();
-        if(!token) {
-            router.push(OAUTH_URL);
-            return;
-        }
-        console.log("TOKEN: " + token);
-
-        getGuilds(token)
-            .then(guilds => {
-                setGuildData(guilds);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-        getUser(token)
-            .then(user => {
-                setUserData(user);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }, [router]);
-
-    if(!guildData || !userData) return null; // Still loading
-
-    return (
-        <div className="flex items-center justify-center bg-dark-900 min-h-screen">
-            <div className="flex flex-col space-y-4 w-3/4">
-                <Profile user={userData}/>
-                <Guilds guilds={guildData}/>
-            </div>
+const GuildsPage = ({ guilds, user }: GuildsPageProps) => {
+    if(guilds && user) {
+        return (
+            <div className="flex items-center justify-center bg-dark-900 min-h-screen">
+                <div className="flex flex-col space-y-4 w-3/4">
+                    <Profile user={user}/>
+                    <Guilds guilds={guilds}/>
+                </div>
         </div>
-        
-    );
-
+        );
+    } else {
+        return <p>Something went wrong. Please try again.</p>;
+    }
 }
+
 
 export default GuildsPage;
