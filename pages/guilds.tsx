@@ -58,7 +58,9 @@ const Guild = ({ guild }: IGuildPropType) => {
     return (
         <div className="flex flex-col items-center w-max space-y-2 col-span-1">
             <div>
-                <Image className="rounded-3xl hover:rounded-md filter hover:brightness-150 duration-200 cursor-pointer" src={iconURL} alt="Guild icon" width={200} height={200}/>
+                <Link href={`/dashboard/${ guild.id }`} passHref>
+                    <Image className="rounded-3xl hover:rounded-md filter hover:brightness-150 duration-200 cursor-pointer" src={iconURL} alt="Guild icon" width={200} height={200}/>
+                </Link>
             </div>
 
             <div className="text-gray-300 w-max text-center">
