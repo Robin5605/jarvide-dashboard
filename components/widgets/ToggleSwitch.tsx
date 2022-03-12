@@ -1,6 +1,6 @@
 'use strict'
 
-import {useState, useCallback, useEffect, RefObject, FC, SVGProps} from 'react'
+import {useState, useCallback, useEffect, RefObject, FC, SVGProps, useRef} from 'react'
 import {renderToString} from 'react-dom/server'
 
 //This is the best I can do for now. It ain't much, but its honest work.
@@ -38,14 +38,14 @@ type IToggleSwitchProps = {
 
 const ToggleSwitch: FC<IToggleSwitchProps> = ({onSwitchOff, onSwitchOn, onLoad, toggled="false", colorOn="#4ADE80", colorOff="#d1d5db", imgOn, imgOff}) => {
 
-  let boxRef
+  const boxRef = useRef<any>();
 
   const Checkbox = useCallback((checkbox) => {
     if(checkbox !== null){
 
-      boxRef = checkbox
+      boxRef.current = checkbox;
       
-      checkbox.onclick = (event) => {
+      checkbox.onclick = () => {
         if(checkbox.checked){
           if(onSwitchOn){
             onSwitchOn()
@@ -58,7 +58,7 @@ const ToggleSwitch: FC<IToggleSwitchProps> = ({onSwitchOff, onSwitchOn, onLoad, 
         }
       }
     }
-  })
+  }, [onSwitchOff, onSwitchOn])
 
   useEffect(() => {
     if(onLoad){
@@ -67,8 +67,8 @@ const ToggleSwitch: FC<IToggleSwitchProps> = ({onSwitchOff, onSwitchOn, onLoad, 
   })
 
   useEffect(() => {
-    toggled = (/true/).test(toggled)
-    boxRef.checked = toggled
+    boxRef.current = (/true/).test(toggled)
+    boxRef.current.checked = toggled
   }, [toggled])
   return(
     <>
