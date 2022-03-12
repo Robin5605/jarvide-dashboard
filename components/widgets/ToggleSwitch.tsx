@@ -4,17 +4,18 @@ import {useState, useCallback, useEffect, RefObject, FC, SVGProps} from 'react'
 import {renderToString} from 'react-dom/server'
 
 //This is the best I can do for now. It ain't much, but its honest work.
-type hexColorDig = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
+//bug with hexColor, will fix later
+/*type hexColorDig = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
 
-type hexColor = `${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}`
+type hexColor = `${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}`*/
 
 type IToggleSwitchProps = {
   onSwitchOff?: () => void,
   onSwitchOn?: () => void,
   onLoad?: () => void,
   toggled?: string | boolean,
-  colorOn?: hexColor,
-  colorOff?: hexColor,
+  colorOn?: /*hexColor*/string,
+  colorOff?: /*hexColor*/string,
   imgOn?: SVGProps<SVGSVGElement>,
   imgOff?: SVGElement & HTMLElement
 }
