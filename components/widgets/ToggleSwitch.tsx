@@ -1,9 +1,22 @@
-import {useState, useCallback} from 'react'
+'use strict'
 
-interface IToggleSwitchProps {
+import {useState, useCallback, useEffect, RefObject, FC, SVGProps} from 'react'
+import {renderToString} from 'react-dom/server'
+
+//This is the best I can do for now. It ain't much, but its honest work.
+type hexColorDig = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0" | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
+
+type hexColor = `${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}${hexColorDig}`
+
+type IToggleSwitchProps = {
   onSwitchOff?: () => void,
   onSwitchOn?: () => void,
-  checked?: boolean
+  onLoad?: () => void,
+  toggled?: string | boolean,
+  colorOn?: hexColor,
+  colorOff?: hexColor,
+  imgOn?: SVGProps<SVGSVGElement>,
+  imgOff?: SVGElement & HTMLElement
 }
 
 /**
@@ -14,36 +27,24 @@ interface IToggleSwitchProps {
  * <div className = "w-[200px] h-[100px]">
  *  <ToggleSwitch onSwitchOn={() => {
  *    //do something when switch is on
- *   } checked="true"} />
+ *   } toggled="true"} />
  * </div>
  * 
  * return (
- *  <ToggleSwitch onSwitchOff={() => void} onSwitchOn={() => void} checked="true | false" />
+ *  <ToggleSwitch onSwitchOff={() => void} onSwitchOn={() => void} toggled="true | false" />
  * ) 
  */
 
-//Don't ask why the prop that determines weather it's switched on is called "checked". I can't get it to work with another name. If someone can fix this please call the new prop "toggled".
+const ToggleSwitch: FC<IToggleSwitchProps> = ({onSwitchOff, onSwitchOn, onLoad, toggled="false", colorOn="#4ADE80", colorOff="#d1d5db", imgOn, imgOff}) => {
 
-const ToggleSwitch = ({onSwitchOff, onSwitchOn, checked=false}:IToggleSwitchProps) => {
-
-  const [width, setWidth] = useState(0)
-  const [newPos, setNewPos] = useState(0)
-  const [pad, setPad] = useState(0)
-
-  const Toggle = useCallback((toggle) => {
-    if(toggle !== null){
-      setNewPos(parseInt(window.getComputedStyle(toggle).width))
-      setWidth(parseInt(window.getComputedStyle(toggle, ":after").height))
-      setPad(parseInt(window.getComputedStyle(toggle).padding))
-    }
-  }, []);
+  let boxRef
 
   const Checkbox = useCallback((checkbox) => {
     if(checkbox !== null){
 
-      checkbox.checked = checked
+      boxRef = checkbox
       
-      checkbox.onclick = (event: any) => {
+      checkbox.onclick = (event) => {
         if(checkbox.checked){
           if(onSwitchOn){
             onSwitchOn()
@@ -56,21 +57,103 @@ const ToggleSwitch = ({onSwitchOff, onSwitchOn, checked=false}:IToggleSwitchProp
         }
       }
     }
-  }, [checked, onSwitchOff, onSwitchOn]);
-  
+  })
+
+  useEffect(() => {
+    if(onLoad){
+      onLoad()
+    }
+  })
+
+  useEffect(() => {
+    toggled = (/true/).test(toggled)
+    boxRef.checked = toggled
+  }, [toggled])
   return(
-    <div className="relative w-full h-full flex items-center">
+    <>
       <style jsx>{`
-        span.toggle::after {
-          width: ${width}px;
+        //Container
+        div{
+          position: relitive;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
         }
-        input.checkbox:checked ~ span.toggle::after{
-          transform: translate(${newPos - width - (2 * pad)}px, 0px);
+
+        //ToggleSwitch
+        input::after {
+          animation-duration: 300ms;
+          animation-name: turnOff;
+          animation-fill-mode: forwards;
+          content: "";
+          height: 90%;
+          margin-left: 2%;
+          margin-right: 2%;
+          position: absolute;
+          aspect-ratio: 1/1;
+          z-index: 1;
+          background: ${imgOff? `url(data:image/svg+xml;charset=utf8,${encodeURIComponent(renderToString(imgOff))})`: "white"};
+          background-size: cover;
+          transition-duration: 300ms;
+          border-radius: 9999px;
+        }
+        input:checked::after{
+          animation-duration: 300ms;
+          animation-name: turnOn;
+          animation-fill-mode: forwards;
+          background: ${imgOn? `url(data:image/svg+xml;charset=utf8,${encodeURIComponent(renderToString(imgOn))})`: "white"};
+          background-size: cover;
+          border-radius: 9999px;
+        }
+        input:checked::before{
+          background: ${colorOn};
+          transition-duration: 300ms;
+        }
+        input::before{
+          position: absolute;
+          content: "";
+          width:100%;
+          height: 100%;
+          background:${colorOff};
+          transition-duration: 300ms;
+          border-radius: 9999px;
+        }
+        input{
+          display: flex;
+          align-items: center;
+          flex-shrink: 0;
+          appearance:none;
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 9999px;
+        }
+
+        //Animations
+        @keyframes turnOn{
+          from {
+            left: 0%;
+          }
+          to {
+            transform: translateX(-100%);
+            left: 96%;
+          }
+        }
+        @keyframes turnOff{
+          from {
+            transform: translateX(-100%);
+            left: 96%;
+          }
+          to {
+            left: 0%;
+          }
         }
       `}</style>
-      <input ref = {Checkbox} type="checkbox" className="checkbox z-10 absolute peer w-full h-full rounded-full appearance-none" />
-      <span ref= {Toggle} className={`toggle w-full h-full flex items-center shrink-0 bg-gray-300 p-[5%] rounded-full duration-300 after:duration-300 after:bg-white after:rounded-full after:h-[100%] peer-checked:bg-green-400 peer-checked:after:duration-300 peer-default:duration-300`} />
-    </div>
+      <div>
+        <input ref = {Checkbox} type="checkbox" />
+      </div>
+    </>
   )
 }
 
