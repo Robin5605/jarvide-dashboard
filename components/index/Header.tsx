@@ -1,15 +1,5 @@
-import { RESTPostOAuth2AccessTokenResult } from "discord-api-types/v9";
 import Link from "next/link";
 import { OAUTH_URL } from "../../config";
-
-// Ported straight from /guilds
-function getAccessToken(): string | null {
-    const tokenData = localStorage.getItem("token_data")
-    if(!tokenData) return null;
-    const parsed = JSON.parse(tokenData) as RESTPostOAuth2AccessTokenResult;
-
-    return parsed.access_token;
-}
 
 const TextSection = () => {
     return (
@@ -24,18 +14,13 @@ const TextSection = () => {
 
 const ButtonSection = () => {
 
-    let token;
-    if(typeof window !== 'undefined') {
-        token = getAccessToken();
-    }
-
     return (
         <div className="flex flex-row justify-between">
             <div className="bg-lush-700 border-2 border-lush-700 hover:shadow-md text-white hover:bg-lush-600 p-3 rounded-sm duration-200 cursor-pointer">
                 <Link href={OAUTH_URL}>GET STARTED NOW</Link>
             </div>
 
-            <div className=" border-2 border-gray-300 text-gray-300 rounded-sm px-6 py-3 hover:shadow-md hover:border-white hover:text-white duration-200 cursor-pointer">
+            <div className=" border-2 border-gray-300 text-gray-300 rounded-sm p-3 hover:shadow-md hover:border-white hover:text-white duration-200 cursor-pointer">
                 <a href="#">LEARN MORE</a>
             </div>
         </div>
@@ -44,7 +29,7 @@ const ButtonSection = () => {
 
 const Header = () => {
     return (
-        <div className="flex justify-center p-24 h-3/4  bg-slate-700 ">
+        <div className="flex justify-center p-24 h-3/4 w-full bg-slate-700 ">
             <div className="flex flex-col space-y-24">
                 <TextSection/>
                 <ButtonSection/>

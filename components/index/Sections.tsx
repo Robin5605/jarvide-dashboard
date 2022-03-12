@@ -2,10 +2,10 @@ import {FaCloud, FaTerminal, FaArrowRight, FaPaperPlane} from 'react-icons/fa'
 
 const Section1 = () => {
     return (
-        <div className="flex justify-center p-12 bg-dark-900 h-108">
+        <div className="flex p-24 bg-dark-900">
             <div className="flex flex-col space-y-4">
                 <h1 className="text-gray-200 text-3xl">Easy To Use</h1>
-                <p className="text-gray-400 w-96">
+                <p className="text-gray-400">
                     Our bot has features that will make your life easier. 
                     Simple features that are necessary.
                 </p>
@@ -15,7 +15,7 @@ const Section1 = () => {
                         <FaCloud className='text-gray-300' size={50}/>
                     </div>
                     
-                    <div className="inline-flex flex-col h-max w-96 space-y-1 text-left self-center">
+                    <div className="flex flex-col h-max space-y-1 text-left self-center">
                         <h1 className="text-gray-200">Save and record.</h1>
                         <h2 className="text-gray-400">
                             Jarvide saves all of your work to the cloud to be later 
@@ -24,12 +24,12 @@ const Section1 = () => {
                     </div>
                 </div>
 
-                <div className="inline-flex flex-row h-max space-x-6">
+                <div className="flex flex-row h-max space-x-6">
                     <div className="inline-flex h-max border-2 p-2 border-gray-500">
                         <FaTerminal className='text-gray-300' size={50}/>
                     </div>
                     
-                    <div className="inline-flex flex-col h-max w-96 space-y-1 text-left self-center">
+                    <div className="flex flex-col h-max space-y-1 text-left self-center">
                         <h1 className="text-gray-200">Simple commands.</h1>
                         <h2 className="text-gray-400">
                             Jarvide gives the experience of high level commands 
@@ -45,10 +45,10 @@ const Section1 = () => {
 
 const Section2 = () => {
     return (
-        <div className="flex justify-center p-12 bg-dark-600 h-128">
+        <div className="flex justify-center p-24 bg-dark-600">
             <div className="flex flex-col space-y-4">
                 <h1 className="text-gray-200 text-3xl">Jarvide Works Anywhere</h1>
-                <p className="text-gray-400 w-108">
+                <p className="text-gray-400">
                 Jarvide{"'"}s IDE works anywhere, from your phone to your PC. 
                 Its IDE works pleasurably on mobile devices with the same 
                 experience you would get on a laptop or PC.
@@ -59,7 +59,7 @@ const Section2 = () => {
                         <FaCloud className='text-gray-300' size={50}/>
                     </div>
                     
-                    <div className="inline-flex flex-col h-max w-96 space-y-1 text-left self-center">
+                    <div className="inline-flex flex-col h-max space-y-1 text-left self-center">
                         <h1 className="text-gray-200">Upload to the cloud.</h1>
                         <h2 className="text-gray-400">
                         You make it. We save it. All your files will be easily 
@@ -73,7 +73,7 @@ const Section2 = () => {
                         <FaArrowRight className='text-gray-300' size={50}/>
                     </div>
                     
-                    <div className="inline-flex flex-col h-max w-96 space-y-1 text-left self-center">
+                    <div className="inline-flex flex-col h-max space-y-1 text-left self-center">
                         <h1 className="text-gray-200">Code on the move.</h1>
                         <h2 className="text-gray-400">
                             Using our cloud, you can download your files and code 
@@ -87,7 +87,7 @@ const Section2 = () => {
                         <FaPaperPlane className='text-gray-300' size={50}/>
                     </div>
                     
-                    <div className="inline-flex flex-col h-max w-96 space-y-1 text-left self-center">
+                    <div className="inline-flex flex-col h-max space-y-1 text-left self-center">
                         <h1 className="text-gray-200">Favouring simplicity and style.</h1>
                         <h2 className="text-gray-400">
                             Simplicity and style makes both the world of high-end 
@@ -103,10 +103,10 @@ const Section2 = () => {
 
 const Section3 = () => {
     return (
-        <div className="flex justify-center p-12 bg-dark-900 h-96">
+        <div className="flex justify-center p-12 bg-dark-900">
             <div className="flex flex-col space-y-4">
                 <h1 className="text-gray-200 text-3xl">Email Support</h1>
-                <p className="text-gray-400 w-132">
+                <p className="text-gray-400">
                     Jarvide has an outstanding support team. We will help you no matter what, 
                     no matter when. We will guarantee an email within 3-5 working days. Our support 
                     team consists of the developers and helpers that have made this bot so your 
@@ -124,7 +124,7 @@ const Section3 = () => {
 
 const Section4 = () => {
     return (
-        <div className="flex h-60 bg-purple-1000 items-center px-128">
+        <div className="flex p-24 bg-purple-1000 items-center">
             <div className="flex flex-col space-y-2">
                 <h1 className="text-gray-100 text-3xl">Start Making Your Life Easier</h1>
                 <h3 className="text-gray-350 text-md">Get the Discord bot of the future.</h3>
@@ -135,12 +135,12 @@ const Section4 = () => {
 
 const Sections = () => {
     return (
-        <>
+        <div className="w-full">
             <Section1/>
             <Section2/>
             <Section3/>
             <Section4/>
-        </>
+        </div>
         
     );
 }

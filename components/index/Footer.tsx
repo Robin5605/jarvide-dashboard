@@ -31,8 +31,8 @@ const Spacer = () => {
 
 const Footer = () => {
     return (
-        <div className="flex justify-center items-center bg-dark-900 h-72">
-            <div className="flex flex-row space-x-36">
+        <div className="flex bg-dark-900 p-24 w-full">
+            <div className="flex gap-12 flex-wrap justify-between">
                 <div className="flex flex-col">
                     <ColumnHeading text="COMPANY"/>
                     <Spacer/>

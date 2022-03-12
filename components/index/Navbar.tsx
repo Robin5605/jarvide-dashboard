@@ -31,7 +31,7 @@ const NavbarButton = ({ text, selected, onSelected }: INavbarButtonProps) => {
 const Navbar = () => {
     const [selected, setSelected] = useState('HOME');
     return (
-        <div className="flex flex-row fixed justify-center w-screen h-16 bg-dark-800 shadow-xl">
+        <div className="flex flex-row fixed justify-center w-full h-16 bg-dark-800 shadow-xl">
             <NavbarButton selected={selected} onSelected={setSelected} text="HOME"/>
             <NavbarButton selected={selected} onSelected={setSelected} text="ABOUT"/>
             <NavbarButton selected={selected} onSelected={setSelected} text="CONTACT"/>

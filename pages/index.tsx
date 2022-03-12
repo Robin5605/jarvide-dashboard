@@ -13,7 +13,7 @@ const Home = () => {
         <meta content="Discord bot with an integrated IDE" />
         
       </Head>
-      <div className="flex flex-col">
+      <div className="flex flex-col bg-red-500">
         <Navbar />
         <Header />
         <DiscordBar />
